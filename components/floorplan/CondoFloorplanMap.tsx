@@ -214,11 +214,10 @@ function ArchitecturalDetails() {
 
 function RiskLegend() {
   return (
-    <foreignObject x="478" y="42" width="210" height="58">
+    <foreignObject x="510" y="8" width="178" height="54">
       <div className="rounded-lg border border-slate-300 bg-white/95 p-2 text-[10px] text-slate-700 shadow-sm backdrop-blur">
         <div className="mb-1 font-bold text-slate-950">แผนที่ความเสี่ยงสูง</div>
-        <div className="grid grid-cols-4 gap-1">
-          <span className="rounded bg-cyan-300 px-1 text-slate-950">ต่ำ</span>
+        <div className="grid grid-cols-3 gap-1">
           <span className="rounded bg-lime-400 px-1 text-slate-950">ปกติ</span>
           <span className="rounded bg-yellow-300 px-1 text-slate-950">กลาง</span>
           <span className="rounded bg-red-500 px-1 text-white">สูง</span>
