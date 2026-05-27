@@ -1,60 +1,32 @@
 "use client";
 
-import { AlertTriangle, CheckCircle2 } from "lucide-react";
-import { RealtimeAlertPanel } from "@/components/RealtimeAlertPanel";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CareAlert } from "@/lib/types";
 import { useMonitoringStore } from "@/store/monitoring-store";
-import { severityTone } from "@/lib/utils";
 
 export default function AlertsPage() {
   const { alerts, acknowledgeAlert } = useMonitoringStore();
-  const emergencyCount = alerts.filter((alert) => alert.severity === "emergency").length;
-  const openCount = alerts.filter((alert) => !alert.acknowledged).length;
 
   return (
-    <div className="grid gap-5 xl:grid-cols-[.75fr_1.25fr]">
-      <div className="space-y-4">
-        <RealtimeAlertPanel alerts={alerts.slice(0, 6)} />
-        <Card>
-          <CardHeader>
-            <CardTitle>สรุปแจ้งเตือน</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-3">
-            <SummaryItem icon={AlertTriangle} label="ยังไม่รับทราบ" value={openCount} />
-            <SummaryItem icon={AlertTriangle} label="ฉุกเฉิน" value={emergencyCount} />
-            <SummaryItem icon={CheckCircle2} label="เวลาตอบสนอง" value="02:00 นาที" />
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>รายการแจ้งเตือน</CardTitle>
+    <div className="mx-auto max-w-5xl">
+      <Card className="border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+        <CardHeader className="border-b border-slate-100">
+          <CardTitle className="text-2xl font-bold text-slate-950">
+            ประวัติการแจ้งเตือน
+          </CardTitle>
+          <p className="text-sm font-medium text-slate-700">
+            แสดงเหตุการณ์ล่าสุดที่ผู้ดูแลควรรับทราบ เรียงจากใหม่ไปเก่า
+          </p>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-3 p-5">
           {alerts.map((alert) => (
-            <div key={alert.id} className={`rounded-lg border p-4 ${severityTone(alert.severity)}`}>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={alert.severity === "emergency" ? "danger" : "soft"}>
-                      {severityThai(alert.severity)}
-                    </Badge>
-                    <span className="text-xs text-slate-500">{alert.timestamp}</span>
-                  </div>
-                  <div className="mt-2 font-semibold">{alertMessageThai(alert.message)}</div>
-                  <div className="mt-1 text-sm opacity-80">{roomThai(alert.room)}</div>
-                </div>
-                <button
-                  onClick={() => acknowledgeAlert(alert.id)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm transition hover:bg-slate-50 disabled:opacity-50"
-                  disabled={alert.acknowledged}
-                >
-                  {alert.acknowledged ? "รับทราบแล้ว" : "รับทราบ"}
-                </button>
-              </div>
-            </div>
+            <AlertHistoryItem
+              key={alert.id}
+              alert={alert}
+              onAcknowledge={() => acknowledgeAlert(alert.id)}
+            />
           ))}
         </CardContent>
       </Card>
@@ -62,24 +34,55 @@ export default function AlertsPage() {
   );
 }
 
-function SummaryItem({
-  icon: Icon,
-  label,
-  value,
+function AlertHistoryItem({
+  alert,
+  onAcknowledge,
 }: {
-  icon: typeof AlertTriangle;
-  label: string;
-  value: string | number;
+  alert: CareAlert;
+  onAcknowledge: () => void;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-3">
-      <div className="flex items-center gap-3 text-slate-700">
-        <Icon className="h-4 w-4 text-cyan-600" />
-        <span>{label}</span>
+    <div className={`rounded-xl border p-4 ${alertTone(alert.severity)}`}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant={alert.severity === "emergency" ? "danger" : "soft"}>
+              {severityThai(alert.severity)}
+            </Badge>
+            <span className="text-sm font-semibold text-slate-800">{alert.timestamp}</span>
+            {alert.acknowledged && (
+              <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-700">
+                <CheckCircle2 className="h-4 w-4" />
+                รับทราบแล้ว
+              </span>
+            )}
+          </div>
+          <div className="mt-2 text-lg font-bold text-slate-950">
+            {alertMessageThai(alert.message)}
+          </div>
+          <div className="mt-1 text-base font-semibold text-slate-800">
+            {roomThai(alert.room)}
+          </div>
+        </div>
+
+        {!alert.acknowledged && (
+          <button
+            onClick={onAcknowledge}
+            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-950 shadow-sm transition hover:border-cyan-300 hover:bg-cyan-50 sm:w-auto"
+          >
+            รับทราบ
+          </button>
+        )}
       </div>
-      <span className="font-semibold">{value}</span>
     </div>
   );
+}
+
+function alertTone(severity: string) {
+  if (severity === "emergency") return "border-rose-300 bg-rose-50";
+  if (severity === "high") return "border-orange-300 bg-orange-50";
+  if (severity === "medium") return "border-amber-300 bg-amber-50";
+  return "border-emerald-300 bg-emerald-50";
 }
 
 function alertMessageThai(message: string) {
