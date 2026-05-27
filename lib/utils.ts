@@ -19,13 +19,13 @@ export function riskColor(score: number) {
 export function severityTone(severity: string) {
   switch (severity) {
     case "emergency":
-      return "border-rose-400/50 bg-rose-500/15 text-rose-100";
+      return "border-rose-300 bg-rose-50 text-rose-900";
     case "high":
-      return "border-orange-300/50 bg-orange-400/15 text-orange-100";
+      return "border-orange-300 bg-orange-50 text-orange-950";
     case "medium":
-      return "border-amber-300/50 bg-amber-400/15 text-amber-100";
+      return "border-amber-300 bg-amber-50 text-amber-950";
     default:
-      return "border-emerald-300/40 bg-emerald-400/10 text-emerald-100";
+      return "border-emerald-300 bg-emerald-50 text-emerald-950";
   }
 }
 

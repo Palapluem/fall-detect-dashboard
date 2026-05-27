@@ -13,13 +13,13 @@ function hotColor(intensity: number) {
 
 export function HeatmapOverlay({ points }: { points: HeatPoint[] }) {
   return (
-    <g style={{ mixBlendMode: "multiply" }}>
+    <g>
       <defs>
         {points.map((point) => (
           <radialGradient key={point.id} id={`heat-${point.id}`}>
-            <stop offset="0%" stopColor={hotColor(point.intensity)} stopOpacity="0.78" />
-            <stop offset="44%" stopColor={hotColor(point.intensity)} stopOpacity="0.38" />
-            <stop offset="74%" stopColor="#78ff00" stopOpacity="0.22" />
+            <stop offset="0%" stopColor={hotColor(point.intensity)} stopOpacity="0.58" />
+            <stop offset="44%" stopColor={hotColor(point.intensity)} stopOpacity="0.28" />
+            <stop offset="74%" stopColor="#78ff00" stopOpacity="0.14" />
             <stop offset="100%" stopColor="#78ff00" stopOpacity="0" />
           </radialGradient>
         ))}
@@ -31,9 +31,9 @@ export function HeatmapOverlay({ points }: { points: HeatPoint[] }) {
           cy={point.y}
           r={point.radius * 1.18}
           fill={`url(#heat-${point.id})`}
-          initial={{ opacity: 0.72, scale: 0.96 }}
+          initial={{ opacity: 0.58, scale: 0.96 }}
           animate={{
-            opacity: [0.62, 0.88, 0.62],
+            opacity: [0.5, 0.7, 0.5],
             scale: [0.98, 1.04, 0.98],
           }}
           transition={{

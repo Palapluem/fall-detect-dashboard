@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 type BadgeVariant = "soft" | "safe" | "warning" | "danger" | "care";
 
 const variants: Record<BadgeVariant, string> = {
-  soft: "border-white/10 bg-white/[0.06] text-slate-200",
-  safe: "border-emerald-300/30 bg-emerald-400/10 text-emerald-200",
-  warning: "border-amber-300/35 bg-amber-400/12 text-amber-200",
-  danger: "border-rose-300/40 bg-rose-500/15 text-rose-100",
-  care: "border-cyan-300/35 bg-cyan-400/12 text-cyan-100",
+  soft: "border-slate-200 bg-slate-50 text-slate-700",
+  safe: "border-emerald-300 bg-emerald-50 text-emerald-800",
+  warning: "border-amber-300 bg-amber-50 text-amber-900",
+  danger: "border-rose-300 bg-rose-50 text-rose-800",
+  care: "border-cyan-300 bg-cyan-50 text-cyan-800",
 };
 
 export function Badge({

@@ -61,6 +61,7 @@ export function CondoFloorplanMap({
     [recentReadings],
   );
   const nearFalls = readings.filter((reading) => reading.near_fall).slice(compact ? -3 : -5);
+  const activePoint = doorAlignedPoint(activeReading.room, readings.length);
   const visibleHeatPoints = useMemo(
     () =>
       [...riskZones, ...heatPoints]
@@ -140,7 +141,6 @@ export function CondoFloorplanMap({
                 animate={{
                   opacity: active ? roomHeatOpacity(risk) + 0.05 : roomHeatOpacity(risk),
                 }}
-                style={{ mixBlendMode: "multiply" }}
               />
               <foreignObject x={room.label.x} y={room.label.y - 18} width="168" height="40">
                 <div className="flex items-center gap-2 text-xs font-semibold text-slate-900">
@@ -167,19 +167,21 @@ export function CondoFloorplanMap({
         ))}
 
         <motion.g
-          animate={{ x: activeReading.x, y: activeReading.y }}
+          animate={{ x: activePoint.x, y: activePoint.y }}
           transition={{ type: "spring", stiffness: 70, damping: 18 }}
         >
           <motion.circle
-            r="18"
-            fill="rgba(34,211,238,.18)"
-            animate={{ scale: [1, 1.45, 1], opacity: [0.35, 0.08, 0.35] }}
+            r="17"
+            fill="rgba(8,145,178,.16)"
+            animate={{ scale: [1, 1.38, 1], opacity: [0.4, 0.12, 0.4] }}
             transition={{ repeat: Infinity, duration: 1.8 }}
           />
-          <circle r="7" fill="#67e8f9" stroke="#082f49" strokeWidth="3" />
-          <text x="14" y="-14" className="fill-slate-950 text-[11px] font-semibold">
-            สด
-          </text>
+          <circle r="8" fill="#0891b2" stroke="#ffffff" strokeWidth="3" />
+          <foreignObject x="12" y="-28" width="96" height="28">
+            <div className="inline-flex rounded-full border border-cyan-200 bg-white px-2.5 py-1 text-[11px] font-bold text-cyan-900 shadow-sm">
+              คุณสมชาย
+            </div>
+          </foreignObject>
         </motion.g>
 
         <RiskLegend />
@@ -245,10 +247,10 @@ function doorAlignedPoint(room: RoomName, index: number) {
 }
 
 function roomHeatOpacity(risk: number) {
-  if (risk >= 82) return 0.36;
-  if (risk >= 62) return 0.3;
-  if (risk >= 42) return 0.22;
-  return 0.14;
+  if (risk >= 82) return 0.22;
+  if (risk >= 62) return 0.18;
+  if (risk >= 42) return 0.14;
+  return 0.08;
 }
 
 function ArchitecturalDetails() {
