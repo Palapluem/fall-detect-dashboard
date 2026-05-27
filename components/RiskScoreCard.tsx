@@ -28,6 +28,8 @@ export function RiskScoreCard({
   max?: number;
 }) {
   const pct = Math.min(100, Math.round((value / max) * 100));
+  const barColor = progressColor(pct, tone);
+  const progressLabel = max === 100 ? `${pct}%` : `${value}/${max}`;
 
   return (
     <Card className="overflow-hidden">
@@ -38,11 +40,21 @@ export function RiskScoreCard({
           </div>
           <span className="text-xs text-slate-500">{detail}</span>
         </div>
-        <div className="mt-4 text-sm text-slate-400">{label}</div>
-        <div className="mt-1 text-3xl font-semibold tracking-normal">{value}</div>
-        <div className="mt-4 h-2 rounded-full bg-slate-100">
+        <div className="mt-4 text-sm font-semibold text-slate-600">{label}</div>
+        <div className="mt-1 flex items-end justify-between gap-3">
+          <div className="text-3xl font-semibold tracking-normal text-slate-950">{value}</div>
+          <div className="pb-1 text-xs font-semibold text-slate-700">{progressLabel}</div>
+        </div>
+        <div
+          className="mt-4 h-2 rounded-full bg-slate-100"
+          role="progressbar"
+          aria-label={label}
+          aria-valuemin={0}
+          aria-valuemax={max}
+          aria-valuenow={value}
+        >
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-emerald-300 to-amber-300"
+            className={cn("h-full rounded-full", barColor)}
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{ type: "spring", stiffness: 80, damping: 18 }}
@@ -51,4 +63,16 @@ export function RiskScoreCard({
       </CardContent>
     </Card>
   );
+}
+
+function progressColor(pct: number, tone: keyof typeof tones) {
+  if (tone === "safe") {
+    if (pct >= 70) return "bg-emerald-500";
+    if (pct >= 45) return "bg-amber-400";
+    return "bg-rose-500";
+  }
+
+  if (pct >= 70) return "bg-rose-500";
+  if (pct >= 45) return "bg-amber-400";
+  return "bg-emerald-500";
 }
