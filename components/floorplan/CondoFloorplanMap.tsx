@@ -6,7 +6,7 @@ import { Bath, BedDouble, ChefHat, DoorOpen, Sofa, Trees, Waves } from "lucide-r
 import { HeatmapOverlay } from "@/components/floorplan/HeatmapOverlay";
 import { NearFallMarker } from "@/components/floorplan/NearFallMarker";
 import { riskZones, rooms } from "@/data/floorplan";
-import { RoomName, SensorReading } from "@/lib/types";
+import { RoomName } from "@/lib/types";
 import { clamp, cn, riskColor } from "@/lib/utils";
 import { useMonitoringStore } from "@/store/monitoring-store";
 
@@ -57,10 +57,6 @@ export function CondoFloorplanMap({
         Math.PI +
       90
     : 0;
-  const shadowSteps = useMemo(
-    () => buildShadowFootsteps(readings.slice(compact ? -7 : -10, -1)),
-    [compact, readings],
-  );
   const visibleHeatPoints = useMemo(
     () =>
       [...riskZones, ...heatPoints]
@@ -145,7 +141,6 @@ export function CondoFloorplanMap({
 
         <HeatmapOverlay points={visibleHeatPoints} />
         <ArchitecturalDetails />
-        <FootstepShadowTrail steps={shadowSteps} />
 
         {nearFalls.map((reading) => (
           <NearFallMarker key={reading.timestamp} reading={reading} />
@@ -155,7 +150,7 @@ export function CondoFloorplanMap({
           animate={{ x: activePoint.x, y: activePoint.y }}
           transition={{ duration: 3.2, ease: "easeInOut" }}
         >
-          <FootstepMarker rotation={walkAngle} active />
+          <FootstepMarker rotation={walkAngle} />
           <foreignObject x="14" y="-34" width="108" height="30">
             <div className="inline-flex rounded-full border border-cyan-200 bg-white px-3 py-1 text-[11px] font-bold text-cyan-900 shadow-sm">
               คุณสมชาย
@@ -178,70 +173,48 @@ export function CondoFloorplanMap({
   );
 }
 
-type ShadowFootstep = {
-  id: string;
-  x: number;
-  y: number;
-  rotation: number;
-  opacity: number;
-};
+const stepTrail = [
+  { id: "step-1", y: 34, opacity: 0.18, delay: 0.7, scale: 0.86 },
+  { id: "step-2", y: 16, opacity: 0.42, delay: 0.35, scale: 0.93 },
+  { id: "step-3", y: -2, opacity: 0.82, delay: 0, scale: 1 },
+];
 
-function buildShadowFootsteps(readings: SensorReading[]): ShadowFootstep[] {
-  return readings.map((reading, index) => {
-    const previous = readings[Math.max(0, index - 1)];
-    const rotation =
-      previous && previous !== reading
-        ? (Math.atan2(reading.y - previous.y, reading.x - previous.x) * 180) / Math.PI + 90
-        : 0;
-
-    return {
-      id: reading.timestamp,
-      x: clamp(reading.x, 58, 688),
-      y: clamp(reading.y, 62, 426),
-      rotation,
-      opacity: 0.14 + (index / Math.max(1, readings.length - 1)) * 0.3,
-    };
-  });
-}
-
-function FootstepShadowTrail({ steps }: { steps: ShadowFootstep[] }) {
+function FootstepMarker({ rotation }: { rotation: number }) {
   return (
-    <g aria-label="เงารอยเท้าที่ค่อยๆ จางหาย">
-      {steps.map((step, index) => (
-        <motion.g
-          key={step.id}
-          initial={{ opacity: 0, scale: 0.82 }}
-          animate={{ opacity: [step.opacity, step.opacity * 0.55, 0], scale: [0.92, 1, 1.08] }}
-          transition={{ duration: 5.4, ease: "easeOut", delay: index * 0.08 }}
-          transform={`translate(${step.x} ${step.y}) rotate(${step.rotation})`}
-        >
-          <FootprintPairShape opacity={1} />
-        </motion.g>
-      ))}
-    </g>
-  );
-}
-
-function FootstepMarker({ rotation, active }: { rotation: number; active?: boolean }) {
-  return (
-    <g aria-label="ตำแหน่งคุณสมชายแบบรอยเท้าเงาก้าวเดิน">
+    <g aria-label="ตำแหน่งคุณสมชายแบบรอยเท้า 3 ก้าวที่ค่อยๆ เลือนหาย">
       <motion.g
         animate={{ rotate: rotation }}
         transition={{ duration: 1.1, ease: "easeInOut" }}
         style={{ transformOrigin: "0px 0px" }}
       >
-        <motion.g
-          animate={active ? { y: [-2, 1, -2], opacity: [0.82, 0.46, 0.82] } : undefined}
-          transition={active ? { repeat: Infinity, duration: 1.45, ease: "easeInOut" } : undefined}
-        >
-          <FootprintShape opacity={0.88} />
-        </motion.g>
-        <motion.g
-          animate={active ? { y: [1, -2, 1], opacity: [0.46, 0.82, 0.46] } : undefined}
-          transition={active ? { repeat: Infinity, duration: 1.45, ease: "easeInOut" } : undefined}
-        >
-          <FootprintShape opacity={0.88} mirrored />
-        </motion.g>
+        <path
+          d="M0 42 C2 26 0 10 0 -10"
+          fill="none"
+          stroke="#0f172a"
+          strokeDasharray="2 7"
+          strokeLinecap="round"
+          strokeOpacity=".16"
+          strokeWidth="1.6"
+        />
+        {stepTrail.map((step) => (
+          <motion.g
+            key={step.id}
+            initial={{ opacity: 0, y: step.y + 8, scale: step.scale }}
+            animate={{
+              opacity: [0, step.opacity, step.opacity * 0.52, 0],
+              y: [step.y + 8, step.y, step.y - 2, step.y - 4],
+              scale: [step.scale * 0.92, step.scale, step.scale, step.scale * 1.04],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 4.8,
+              delay: step.delay,
+              ease: "easeOut",
+            }}
+          >
+            <FootprintPairShape opacity={1} />
+          </motion.g>
+        ))}
       </motion.g>
     </g>
   );
