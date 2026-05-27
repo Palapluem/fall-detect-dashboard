@@ -12,6 +12,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useMonitoringStore } from "@/store/monitoring-store";
 
+const fallTypeCodes = [
+  { code: "F01", meaning: "Forward slip fall", thai: "ลื่นล้มไปข้างหน้า" },
+  { code: "F02", meaning: "Backward slip fall", thai: "ลื่นล้มไปข้างหลัง" },
+  { code: "F03", meaning: "Side slip fall", thai: "ลื่นล้มด้านข้าง" },
+  { code: "F04", meaning: "Forward trip fall", thai: "สะดุดล้มไปข้างหน้า" },
+  { code: "F05", meaning: "Jogging trip fall", thai: "สะดุดล้มขณะเดินเร็ว" },
+  { code: "F06", meaning: "Vertical fainting fall", thai: "เป็นลมทรุดลงแนวดิ่ง" },
+  { code: "F07", meaning: "Fall with hand support", thai: "ล้มโดยใช้มือพยุง" },
+  { code: "F08", meaning: "Fall while standing up", thai: "ล้มขณะลุกขึ้นยืน" },
+  { code: "F09", meaning: "Side fall while standing up", thai: "ล้มด้านข้างขณะลุกขึ้นยืน" },
+  { code: "F10", meaning: "Fall while sitting", thai: "ล้มขณะนั่ง" },
+  { code: "F11", meaning: "Backward sit fall", thai: "นั่งแล้วหงายล้มไปข้างหลัง" },
+  { code: "F12", meaning: "Side sit fall", thai: "นั่งแล้วล้มด้านข้าง" },
+  { code: "F13", meaning: "Forward faint while sitting", thai: "เป็นลมโน้มไปข้างหน้าขณะนั่ง" },
+  { code: "F14", meaning: "Backward faint while sitting", thai: "เป็นลมหงายหลังขณะนั่ง" },
+  { code: "F15", meaning: "Side faint while sitting", thai: "เป็นลมล้มด้านข้างขณะนั่ง" },
+];
+
 export default function MainDashboardPage() {
   const {
     alerts,
@@ -140,6 +158,36 @@ export default function MainDashboardPage() {
           </CardContent>
         </Card>
       </section>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>รหัสประเภทการล้มที่ระบบรู้จัก</CardTitle>
+          <p className="mt-1 text-sm font-medium text-slate-700">
+            ใช้เป็นข้อมูลอ้างอิงเมื่อระบบแจ้งเตือนเหตุการณ์ล้มจริง
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-hidden rounded-xl border border-slate-200">
+            <div className="grid grid-cols-[82px_1fr_1.1fr] bg-slate-50 px-4 py-3 text-sm font-bold text-slate-950">
+              <div>Code</div>
+              <div>Meaning</div>
+              <div>คำอธิบาย</div>
+            </div>
+            <div className="divide-y divide-slate-100">
+              {fallTypeCodes.map((item) => (
+                <div
+                  key={item.code}
+                  className="grid grid-cols-[82px_1fr_1.1fr] px-4 py-3 text-sm text-slate-800"
+                >
+                  <div className="font-bold text-cyan-700">{item.code}</div>
+                  <div className="font-semibold text-slate-950">{item.meaning}</div>
+                  <div className="font-medium text-slate-700">{item.thai}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <section className="grid gap-4 xl:grid-cols-2">
         <MobilityTrendChart data={trendData} />
