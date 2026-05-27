@@ -1,7 +1,7 @@
 "use client";
 
 import { BatteryCharging, Cpu, Router, Smartphone, Wifi } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const devices = [
@@ -31,22 +31,6 @@ export default function DeviceStatusPage() {
           </Card>
         ))}
       </section>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>การทำงานของระบบ</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-3 md:grid-cols-5">
-            {["รับข้อมูล", "แยกค่าการเดิน", "วิเคราะห์การเดิน", "ประเมินความเสี่ยง", "แจ้งเตือน"].map((step, index) => (
-              <div key={step} className="rounded-lg border border-cyan-100 bg-cyan-50 p-4">
-                <div className="text-xs uppercase tracking-[0.2em] text-cyan-700">ขั้นที่ {index + 1}</div>
-                <div className="mt-2 font-semibold">{step}</div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

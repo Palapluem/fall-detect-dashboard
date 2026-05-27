@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import {
-  Activity,
   AlertTriangle,
   BarChart3,
   Bell,
@@ -75,17 +74,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-cyan-100 bg-cyan-50 p-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-cyan-800">
-            <Activity className="h-4 w-4" />
-            สรุปการทำงาน
-          </div>
-          <div className="mt-3 space-y-2 text-xs text-slate-600">
-            <div>รับข้อมูลการเคลื่อนไหว</div>
-            <div>วิเคราะห์การเดินและความเสี่ยง</div>
-            <div>แจ้งเตือนเมื่อควรดูแล</div>
-          </div>
-        </div>
       </aside>
 
       <main className="lg:pl-72">
