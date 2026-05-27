@@ -174,12 +174,12 @@ export function CondoFloorplanMap({
 }
 
 const stepTrail = [
-  { id: "step-1", x: -4.4, y: 28, side: "left", opacity: 0.1, delay: 1.25, scale: 0.66 },
-  { id: "step-2", x: 4.4, y: 18, side: "right", opacity: 0.2, delay: 1, scale: 0.69 },
-  { id: "step-3", x: -4.1, y: 8, side: "left", opacity: 0.32, delay: 0.75, scale: 0.72 },
-  { id: "step-4", x: 4.1, y: -2, side: "right", opacity: 0.48, delay: 0.5, scale: 0.75 },
-  { id: "step-5", x: -3.8, y: -12, side: "left", opacity: 0.66, delay: 0.25, scale: 0.78 },
-  { id: "step-6", x: 3.8, y: -22, side: "right", opacity: 0.82, delay: 0, scale: 0.8 },
+  { id: "step-1", x: -6.2, y: 28, side: "left", opacity: 0.18, delay: 0, scale: 0.58 },
+  { id: "step-2", x: 6.2, y: 18, side: "right", opacity: 0.3, delay: 0.42, scale: 0.62 },
+  { id: "step-3", x: -5.8, y: 8, side: "left", opacity: 0.42, delay: 0.84, scale: 0.66 },
+  { id: "step-4", x: 5.8, y: -2, side: "right", opacity: 0.56, delay: 1.26, scale: 0.7 },
+  { id: "step-5", x: -5.4, y: -12, side: "left", opacity: 0.7, delay: 1.68, scale: 0.74 },
+  { id: "step-6", x: 5.4, y: -22, side: "right", opacity: 0.86, delay: 2.1, scale: 0.78 },
 ];
 
 function FootstepMarker({ rotation }: { rotation: number }) {
@@ -193,18 +193,19 @@ function FootstepMarker({ rotation }: { rotation: number }) {
         {stepTrail.map((step) => (
           <motion.g
             key={step.id}
-            initial={{ opacity: 0, x: step.x, y: step.y + 7, scale: step.scale }}
+            initial={{ opacity: 0, x: step.x, y: step.y, scale: step.scale * 0.92 }}
             animate={{
-              opacity: [0, step.opacity, step.opacity * 0.58, 0],
+              opacity: [0, step.opacity, step.opacity * 0.8, 0],
               x: step.x,
-              y: [step.y + 7, step.y, step.y - 1.5, step.y - 3],
-              scale: [step.scale * 0.96, step.scale, step.scale, step.scale * 1.02],
+              y: step.y,
+              scale: [step.scale * 0.92, step.scale, step.scale, step.scale],
             }}
             transition={{
               repeat: Infinity,
-              duration: 4.2,
+              duration: 3.2,
               delay: step.delay,
               ease: "easeOut",
+              times: [0, 0.12, 0.64, 1],
             }}
           >
             <FootprintShape
@@ -238,10 +239,11 @@ function FootprintShape({
 
   return (
     <g transform={`translate(${x} ${y}) rotate(${rotate}) ${mirror}`} opacity={opacity}>
-      <ellipse cx="0" cy="0" rx="2.45" ry="5.2" fill="#0f172a" />
-      <circle cx="-1.75" cy="-6.05" r=".72" fill="#0f172a" />
-      <circle cx="0" cy="-6.75" r=".78" fill="#0f172a" />
-      <circle cx="1.75" cy="-6.05" r=".68" fill="#0f172a" />
+      <path
+        d="M-13 6H2V2H9V-4H5V-8H-6V-5H-11V-1H-15V6H-13Z"
+        fill="#020617"
+      />
+      <rect x="-15" y="6" width="13" height="4.5" fill="#020617" />
     </g>
   );
 }
