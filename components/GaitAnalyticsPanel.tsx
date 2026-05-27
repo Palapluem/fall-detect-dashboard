@@ -12,19 +12,19 @@ export function GaitAnalyticsPanel({
   expanded?: boolean;
 }) {
   const values = [
-    { label: "Gait speed", value: `${latest?.gait_speed.toFixed(2) ?? "0.82"} m/s`, icon: Footprints },
-    { label: "Sway", value: `${latest?.sway.toFixed(2) ?? "3.10"} deg`, icon: Waves },
-    { label: "Cadence", value: `${Math.round(latest?.cadence ?? 92)} spm`, icon: Activity },
-    { label: "Turn velocity", value: `${latest?.turning_velocity.toFixed(1) ?? "68.0"} deg/s`, icon: RotateCcw },
-    { label: "Instability", value: `${Math.round(latest?.instability_score ?? 44)}%`, icon: Gauge },
+    { label: "ความเร็วเดิน", value: `${latest?.gait_speed.toFixed(2) ?? "0.82"} m/s`, icon: Footprints },
+    { label: "การโอนเอน", value: `${latest?.sway.toFixed(2) ?? "3.10"} deg`, icon: Waves },
+    { label: "จังหวะก้าว", value: `${Math.round(latest?.cadence ?? 92)} spm`, icon: Activity },
+    { label: "ความเร็วตอนเลี้ยว", value: `${latest?.turning_velocity.toFixed(1) ?? "68.0"} deg/s`, icon: RotateCcw },
+    { label: "ไม่มั่นคง", value: `${Math.round(latest?.instability_score ?? 44)}%`, icon: Gauge },
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gait Analytics Panel</CardTitle>
+        <CardTitle>ข้อมูลการเดิน</CardTitle>
         <p className="text-sm text-slate-400">
-          Feature extraction from IMU acceleration, gyroscope drift, cadence, sway, and room context.
+          สรุปค่าการเดินจากเซนเซอร์และตำแหน่งในห้อง
         </p>
       </CardHeader>
       <CardContent>

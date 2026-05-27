@@ -6,10 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const tones = {
-  risk: "from-rose-400/30 to-rose-500/5 text-rose-100",
-  safe: "from-emerald-400/25 to-emerald-500/5 text-emerald-100",
-  warning: "from-amber-400/25 to-orange-500/5 text-amber-100",
-  care: "from-cyan-400/25 to-sky-500/5 text-cyan-100",
+  risk: "from-rose-100 to-rose-50 text-rose-700",
+  safe: "from-emerald-100 to-emerald-50 text-emerald-700",
+  warning: "from-amber-100 to-orange-50 text-amber-700",
+  care: "from-cyan-100 to-sky-50 text-cyan-700",
 };
 
 export function RiskScoreCard({
@@ -36,11 +36,11 @@ export function RiskScoreCard({
           <div className={cn("rounded-lg bg-gradient-to-br p-2", tones[tone])}>
             <Icon className="h-5 w-5" />
           </div>
-          <span className="text-xs text-slate-400">{detail}</span>
+          <span className="text-xs text-slate-500">{detail}</span>
         </div>
         <div className="mt-4 text-sm text-slate-400">{label}</div>
         <div className="mt-1 text-3xl font-semibold tracking-normal">{value}</div>
-        <div className="mt-4 h-2 rounded-full bg-slate-800">
+        <div className="mt-4 h-2 rounded-full bg-slate-100">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-emerald-300 to-amber-300"
             initial={{ width: 0 }}

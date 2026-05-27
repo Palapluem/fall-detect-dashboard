@@ -14,7 +14,7 @@ import { TrendDatum } from "@/lib/types";
 
 export function StabilityChart({ data }: { data: TrendDatum[] }) {
   return (
-    <ChartFrame title="Risk And Stability Timeline">
+    <ChartFrame title="ความเสี่ยงและความมั่นคง">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid stroke="rgba(148,163,184,.12)" vertical={false} />

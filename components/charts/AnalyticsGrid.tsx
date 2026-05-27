@@ -31,7 +31,7 @@ export function AnalyticsGrid({
 }) {
   return (
     <section className="grid gap-4 xl:grid-cols-2">
-      <ChartFrame title="Hourly Activity">
+      <ChartFrame title="กิจกรรมรายชั่วโมง">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={hourlyActivityData}>
             <CartesianGrid stroke="rgba(148,163,184,.12)" vertical={false} />
@@ -43,7 +43,7 @@ export function AnalyticsGrid({
         </ResponsiveContainer>
       </ChartFrame>
 
-      <ChartFrame title="Gait Variability">
+      <ChartFrame title="ความแปรปรวนการเดิน">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart data={gaitData}>
             <CartesianGrid stroke="rgba(148,163,184,.12)" />
@@ -55,7 +55,7 @@ export function AnalyticsGrid({
         </ResponsiveContainer>
       </ChartFrame>
 
-      <ChartFrame title="Turning Instability">
+      <ChartFrame title="ความไม่มั่นคงตอนเลี้ยว">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={gaitData}>
             <CartesianGrid stroke="rgba(148,163,184,.12)" vertical={false} />
@@ -67,7 +67,7 @@ export function AnalyticsGrid({
         </ResponsiveContainer>
       </ChartFrame>
 
-      <ChartFrame title="Heatmap Intensity Trend">
+      <ChartFrame title="แนวโน้มความเข้มของ Heatmap">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={trendData}>
             <defs>

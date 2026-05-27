@@ -16,10 +16,10 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-5">
       <section className="grid gap-4 md:grid-cols-4">
-        <RiskScoreCard label="Daily Walks" value={metrics.walkCount} icon={Activity} max={90} detail="Route segments" tone="care" />
-        <RiskScoreCard label="Heat Intensity" value={metrics.heatIntensity} icon={BarChart3} detail="Weighted density" tone="warning" />
-        <RiskScoreCard label="Stability" value={metrics.stabilityScore} icon={Gauge} detail="Lower sway is better" tone="safe" />
-        <RiskScoreCard label="Turn Control" value={metrics.turningScore} icon={RotateCcw} detail="Turning recovery" tone="risk" />
+        <RiskScoreCard label="จำนวนการเดิน" value={metrics.walkCount} icon={Activity} max={90} detail="ช่วงเส้นทาง" tone="care" />
+        <RiskScoreCard label="ความเข้ม Heatmap" value={metrics.heatIntensity} icon={BarChart3} detail="ความหนาแน่น" tone="warning" />
+        <RiskScoreCard label="ความมั่นคง" value={metrics.stabilityScore} icon={Gauge} detail="ค่ายิ่งสูงยิ่งดี" tone="safe" />
+        <RiskScoreCard label="การเลี้ยว" value={metrics.turningScore} icon={RotateCcw} detail="ควบคุมตอนเลี้ยว" tone="risk" />
       </section>
 
       <section className="grid gap-4 xl:grid-cols-3">

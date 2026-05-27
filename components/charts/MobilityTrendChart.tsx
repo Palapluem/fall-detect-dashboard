@@ -14,7 +14,7 @@ import { TrendDatum } from "@/lib/types";
 
 export function MobilityTrendChart({ data }: { data: TrendDatum[] }) {
   return (
-    <ChartFrame title="Mobility Trend">
+    <ChartFrame title="แนวโน้มการเคลื่อนไหว">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data}>
           <defs>

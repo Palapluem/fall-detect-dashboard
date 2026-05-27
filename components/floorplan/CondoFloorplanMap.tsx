@@ -7,7 +7,7 @@ import { HeatmapOverlay } from "@/components/floorplan/HeatmapOverlay";
 import { NearFallMarker } from "@/components/floorplan/NearFallMarker";
 import { WalkingTrailLayer } from "@/components/floorplan/WalkingTrailLayer";
 import { baselinePath, riskZones, rooms } from "@/data/floorplan";
-import { RoomName } from "@/lib/types";
+import { RoomName, SensorReading } from "@/lib/types";
 import { cn, formatClock, riskColor } from "@/lib/utils";
 import { useMonitoringStore } from "@/store/monitoring-store";
 
@@ -56,12 +56,7 @@ export function CondoFloorplanMap({
   const trail = useMemo(
     () =>
       recentReadings.length > 3
-        ? recentReadings.map((reading) => ({
-            x: reading.x,
-            y: reading.y,
-            at: formatClock(reading.timestamp),
-            risk: reading.fall_risk,
-          }))
+        ? buildDoorAlignedWalk(recentReadings)
         : baselinePath,
     [recentReadings],
   );
@@ -200,6 +195,53 @@ export function CondoFloorplanMap({
       )}
     </div>
   );
+}
+
+function buildDoorAlignedWalk(readings: SensorReading[]) {
+  return readings.map((reading, index) => {
+    const roomPoint = doorAlignedPoint(reading.room, index);
+    return {
+      x: roomPoint.x,
+      y: roomPoint.y,
+      at: formatClock(reading.timestamp),
+      risk: reading.fall_risk,
+    };
+  });
+}
+
+function doorAlignedPoint(room: RoomName, index: number) {
+  const points: Record<RoomName, Array<{ x: number; y: number }>> = {
+    Bedroom: [
+      { x: 250, y: 222 },
+      { x: 294, y: 244 },
+    ],
+    Bathroom: [
+      { x: 178, y: 330 },
+      { x: 124, y: 358 },
+    ],
+    Hallway: [
+      { x: 234, y: 290 },
+      { x: 286, y: 334 },
+      { x: 326, y: 392 },
+    ],
+    Kitchen: [
+      { x: 350, y: 330 },
+      { x: 430, y: 342 },
+      { x: 510, y: 360 },
+    ],
+    "Living Room": [
+      { x: 382, y: 226 },
+      { x: 470, y: 206 },
+      { x: 530, y: 236 },
+    ],
+    Balcony: [
+      { x: 566, y: 258 },
+      { x: 612, y: 304 },
+    ],
+  };
+
+  const roomPoints = points[room];
+  return roomPoints[index % roomPoints.length];
 }
 
 function roomHeatOpacity(risk: number) {

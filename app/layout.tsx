@@ -7,9 +7,9 @@ import { AppShell } from "@/components/layout/AppShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Elderly Fall Risk Monitoring Dashboard",
+  title: "แดชบอร์ดติดตามความเสี่ยงการล้ม",
   description:
-    "AI-powered ambient wellness monitoring for elderly safety inside a condominium.",
+    "ระบบติดตามความปลอดภัยและความเสี่ยงการล้มภายในคอนโด",
 };
 
 export default function RootLayout({

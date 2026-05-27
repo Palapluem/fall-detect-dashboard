@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --background: 205 46% 7%;
-  --foreground: 195 38% 96%;
-  --card: 203 33% 11%;
-  --card-foreground: 195 38% 96%;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
   --primary: 188 86% 53%;
   --primary-foreground: 204 80% 7%;
   --muted: 205 26% 16%;
@@ -24,10 +24,7 @@
 body {
   min-height: 100vh;
   color: hsl(var(--foreground));
-  background:
-    linear-gradient(115deg, rgba(20, 83, 45, 0.18), transparent 34%),
-    linear-gradient(245deg, rgba(126, 34, 206, 0.12), transparent 42%),
-    linear-gradient(135deg, #071014 0%, #11201d 48%, #170d1f 100%);
+  background: #ffffff;
 }
 
 svg text {
@@ -35,15 +32,15 @@ svg text {
 }
 
 .glass {
-  background: linear-gradient(145deg, rgba(18, 43, 51, 0.78), rgba(8, 25, 31, 0.72));
-  border: 1px solid rgba(148, 220, 233, 0.14);
-  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.22);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 18px 70px rgba(15, 23, 42, 0.1);
   backdrop-filter: blur(18px);
 }
 
 .map-grid {
   background-image:
-    linear-gradient(rgba(148, 220, 233, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 220, 233, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.14) 1px, transparent 1px);
   background-size: 24px 24px;
 }
