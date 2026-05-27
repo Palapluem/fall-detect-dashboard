@@ -2,17 +2,25 @@
 
 import { motion } from "framer-motion";
 import { HeatPoint } from "@/lib/types";
-import { riskColor } from "@/lib/utils";
+
+function hotColor(intensity: number) {
+  if (intensity >= 82) return "#ef0000";
+  if (intensity >= 64) return "#ff7a00";
+  if (intensity >= 48) return "#ffee00";
+  if (intensity >= 32) return "#00f6d2";
+  return "#004bff";
+}
 
 export function HeatmapOverlay({ points }: { points: HeatPoint[] }) {
   return (
-    <g>
+    <g style={{ mixBlendMode: "multiply" }}>
       <defs>
         {points.map((point) => (
           <radialGradient key={point.id} id={`heat-${point.id}`}>
-            <stop offset="0%" stopColor={riskColor(point.intensity)} stopOpacity="0.62" />
-            <stop offset="58%" stopColor={riskColor(point.intensity)} stopOpacity="0.18" />
-            <stop offset="100%" stopColor={riskColor(point.intensity)} stopOpacity="0" />
+            <stop offset="0%" stopColor={hotColor(point.intensity)} stopOpacity="0.78" />
+            <stop offset="44%" stopColor={hotColor(point.intensity)} stopOpacity="0.38" />
+            <stop offset="74%" stopColor="#78ff00" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#78ff00" stopOpacity="0" />
           </radialGradient>
         ))}
       </defs>
@@ -21,12 +29,12 @@ export function HeatmapOverlay({ points }: { points: HeatPoint[] }) {
           key={point.id}
           cx={point.x}
           cy={point.y}
-          r={point.radius}
+          r={point.radius * 1.18}
           fill={`url(#heat-${point.id})`}
-          initial={{ opacity: 0.35, scale: 0.92 }}
+          initial={{ opacity: 0.72, scale: 0.96 }}
           animate={{
-            opacity: [0.44, 0.72, 0.44],
-            scale: [0.96, 1.05, 0.96],
+            opacity: [0.62, 0.88, 0.62],
+            scale: [0.98, 1.04, 0.98],
           }}
           transition={{
             duration: 3 + index * 0.2,

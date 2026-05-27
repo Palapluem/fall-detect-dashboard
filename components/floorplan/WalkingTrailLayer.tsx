@@ -44,7 +44,7 @@ export function WalkingTrailLayer({
               cx={point.x}
               cy={point.y}
               r={latest ? (compact ? 2.6 : 3) : 1.8}
-              fill="#e0f2fe"
+              fill="#0f172a"
               opacity={latest ? 0.95 : 0.55}
             />
           </g>
