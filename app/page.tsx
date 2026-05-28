@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Footprints, ShieldAlert } from "lucide-react";
+import { AlertTriangle, Footprints, MessageCircleHeart, ShieldAlert } from "lucide-react";
 import { CondoFloorplanMap } from "@/components/floorplan/CondoFloorplanMap";
 import { AIInsightCard } from "@/components/AIInsightCard";
 import { LiveMonitoringBadge } from "@/components/LiveMonitoringBadge";
@@ -106,6 +106,22 @@ export default function MainDashboardPage() {
           </div>
 
           <RealtimeAlertPanel alerts={alerts.slice(0, 3)} />
+
+          <Card className="border-cyan-100 bg-cyan-50/70">
+            <CardContent className="flex gap-3 p-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-cyan-700 shadow-sm">
+                <MessageCircleHeart className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-sm font-extrabold text-slate-950">
+                  แนะนำให้ถามผู้สูงอายุ
+                </div>
+                <p className="mt-1 text-sm font-semibold leading-6 text-slate-700">
+                  ลองถามคุณสมชายว่า “ตอนนี้อยากได้อะไรเพิ่มไหม เช่น น้ำดื่ม เปิดไฟ หรือให้ช่วยพาไปห้องน้ำ”
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader>

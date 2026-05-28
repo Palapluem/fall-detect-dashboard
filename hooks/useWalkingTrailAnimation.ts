@@ -44,6 +44,7 @@ export function useWalkingTrailAnimation(
     [path, settings.strideLength, settings.stepOffset],
   );
   const cursorRef = useRef(0);
+  const stepIdRef = useRef(0);
   const [steps, setSteps] = useState<FootstepPoint[]>([]);
 
   useEffect(() => {
@@ -54,12 +55,13 @@ export function useWalkingTrailAnimation(
   useEffect(() => {
     if (!frames.length) return;
 
-    const interval = window.setInterval(() => {
+    const addStep = () => {
       const frame = frames[cursorRef.current % frames.length];
       const now = Date.now();
+      stepIdRef.current += 1;
       const nextStep: FootstepPoint = {
         ...frame,
-        id: now,
+        id: stepIdRef.current,
         timestamp: now,
       };
 
@@ -70,9 +72,21 @@ export function useWalkingTrailAnimation(
         ].slice(-settings.maxVisibleSteps),
       );
       cursorRef.current = (cursorRef.current + 1) % frames.length;
-    }, settings.stepIntervalMs);
+    };
 
-    return () => window.clearInterval(interval);
+    addStep();
+    const stepInterval = window.setInterval(addStep, settings.stepIntervalMs);
+    const cleanupInterval = window.setInterval(() => {
+      const now = Date.now();
+      setSteps((existing) =>
+        existing.filter((step) => now - step.timestamp < settings.footprintLifetimeMs),
+      );
+    }, 420);
+
+    return () => {
+      window.clearInterval(stepInterval);
+      window.clearInterval(cleanupInterval);
+    };
   }, [frames, settings.footprintLifetimeMs, settings.maxVisibleSteps, settings.stepIntervalMs]);
 
   return steps;

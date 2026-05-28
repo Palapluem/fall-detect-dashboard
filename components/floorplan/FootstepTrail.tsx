@@ -14,11 +14,11 @@ interface FootstepTrailProps {
 
 export function FootstepTrail({ path, compact }: FootstepTrailProps) {
   const steps = useWalkingTrailAnimation(path, {
-    stepIntervalMs: compact ? 620 : 560,
-    maxVisibleSteps: compact ? 5 : 6,
-    strideLength: compact ? 26 : 24,
-    stepOffset: compact ? 5 : 5.5,
-    footprintLifetimeMs: compact ? 3200 : 3400,
+    stepIntervalMs: compact ? 760 : 700,
+    maxVisibleSteps: compact ? 6 : 8,
+    strideLength: compact ? 30 : 28,
+    stepOffset: compact ? 5.8 : 6.2,
+    footprintLifetimeMs: compact ? 4200 : 4600,
   });
 
   return (
@@ -58,7 +58,7 @@ function FootprintMarker({
   ageRatio: number;
 }) {
   const isLeft = step.side === "left";
-  const opacity = 0.22 + ageRatio * 0.58;
+  const opacity = 0.26 + ageRatio * 0.68;
 
   return (
     <motion.g
@@ -66,12 +66,12 @@ function FootprintMarker({
       data-footstep-side={step.side}
       initial={{ opacity: 0, scale: 0.42 }}
       animate={{
-        opacity: [0, opacity, opacity * 0.82, 0],
-        scale: [0.42, 1, 0.92, 0.55],
+        opacity: [0, opacity, opacity * 0.86, 0],
+        scale: [0.25, 1.18, 0.96, 0.58],
       }}
       transition={{
-        opacity: { duration: 3.35, times: [0, 0.12, 0.62, 1], ease: "easeOut" },
-        scale: { duration: 3.35, times: [0, 0.12, 0.72, 1], ease: "easeOut" },
+        opacity: { duration: 4.15, times: [0, 0.1, 0.68, 1], ease: "easeOut" },
+        scale: { duration: 4.15, times: [0, 0.1, 0.72, 1], ease: "easeOut" },
       }}
       style={{
         transformBox: "fill-box",
@@ -86,9 +86,9 @@ function FootprintMarker({
         rx="11"
         ry="14"
         fill="#0ea5e9"
-        opacity="0.18"
-        animate={{ opacity: [0.08, 0.18, 0.08], scale: [0.9, 1.12, 0.9] }}
-        transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+        opacity="0.24"
+        animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.2, 0.9] }}
+        transition={{ duration: 1.45, repeat: Infinity, ease: "easeInOut" }}
       />
       <g transform={`translate(${isLeft ? -1.4 : 1.4} 0) scale(${isLeft ? -1 : 1} 1)`}>
         <path
