@@ -29,6 +29,77 @@ const roomThai: Record<RoomName, string> = {
   Balcony: "ระเบียง",
 };
 
+const roomGuidance: Record<
+  RoomName,
+  {
+    focus: string;
+    walking: string;
+    activities: Array<{ code: string; label: string }>;
+    cautions: string[];
+  }
+> = {
+  Bedroom: {
+    focus: "ช่วงลุกจากเตียงและยืนทรงตัวตอนเช้า",
+    walking: "มักเป็นการเดินช้า ก้าวสั้น และมีจังหวะหยุดก่อนออกจากห้อง",
+    activities: [
+      { code: "D01", label: "Walking slowly" },
+      { code: "D07", label: "Sit slowly / stand up slowly" },
+      { code: "D12", label: "Lie slowly" },
+    ],
+    cautions: ["ระวังข้างเตียง", "เปิดไฟก่อนลุก", "เก็บของบนพื้นให้โล่ง"],
+  },
+  Bathroom: {
+    focus: "พื้นเปียก การหมุนตัว และการเข้าออกประตู",
+    walking: "มักเดินช้า ก้าวระวัง และมีการหมุนตัวแคบใกล้สุขภัณฑ์",
+    activities: [
+      { code: "D01", label: "Walking slowly" },
+      { code: "D18", label: "Stumble" },
+      { code: "F04", label: "Forward trip fall risk" },
+    ],
+    cautions: ["ระวังพื้นลื่น", "จับราวพยุงก่อนหมุนตัว", "เช็ดพื้นเปียกทันที"],
+  },
+  Hallway: {
+    focus: "ทางแคบ จุดเลี้ยว และการเดินตอนกลางคืน",
+    walking: "พบการเดินช้า สลับหยุด และอาจมีการเสียจังหวะเมื่อเลี้ยว",
+    activities: [
+      { code: "D01", label: "Walking slowly" },
+      { code: "D02", label: "Walking quickly" },
+      { code: "D18", label: "Stumble" },
+    ],
+    cautions: ["ระวังมุมเลี้ยว", "เปิดไฟทางเดิน", "อย่าวางของกีดขวาง"],
+  },
+  Kitchen: {
+    focus: "ขอบเคาน์เตอร์ การเอื้อมหยิบของ และพื้นต่างระดับเล็กน้อย",
+    walking: "มักเดินช้าใกล้เคาน์เตอร์และมีการหยุดยืนเพื่อหยิบของ",
+    activities: [
+      { code: "D01", label: "Walking slowly" },
+      { code: "D16", label: "Bend without knees" },
+      { code: "D18", label: "Stumble" },
+    ],
+    cautions: ["ระวังขอบเคาน์เตอร์", "หลีกเลี่ยงการเอื้อมไกล", "เช็ดคราบน้ำ/น้ำมัน"],
+  },
+  "Living Room": {
+    focus: "การลุกนั่งจากโซฟาและการเดินอ้อมเฟอร์นิเจอร์",
+    walking: "มักมีการเดินช้าแล้วหยุดนั่ง หรือเปลี่ยนท่าลุกนั่งซ้ำ",
+    activities: [
+      { code: "D07", label: "Sit slowly" },
+      { code: "D08", label: "Sit quickly" },
+      { code: "D11", label: "Try stand then collapse to chair" },
+    ],
+    cautions: ["ระวังขอบโต๊ะ", "ลุกช้า ๆ จากโซฟา", "วางรีโมต/ของใช้ใกล้มือ"],
+  },
+  Balcony: {
+    focus: "ธรณีประตู แสงต่างระดับ และพื้นภายนอก",
+    walking: "มักมีการชะลอก่อนก้าวข้ามธรณี และก้าวสั้นบริเวณทางออก",
+    activities: [
+      { code: "D01", label: "Walking slowly" },
+      { code: "D05", label: "Upstairs/downstairs slowly" },
+      { code: "D18", label: "Stumble" },
+    ],
+    cautions: ["ระวังธรณีประตู", "เช็กพื้นเปียก", "ใช้รองเท้ากันลื่น"],
+  },
+};
+
 export function CondoFloorplanMap({
   className,
   detailed,
@@ -43,6 +114,7 @@ export function CondoFloorplanMap({
   const { readings, heatPoints, livePosition, roomRisks, nightMode } =
     useMonitoringStore();
   const [hoveredRoom, setHoveredRoom] = useState<RoomName | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<RoomName | null>(null);
   const activeReading =
     typeof playbackIndex === "number"
       ? readings[Math.min(playbackIndex, readings.length - 1)] ?? livePosition
@@ -101,13 +173,27 @@ export function CondoFloorplanMap({
         {rooms.map((room) => {
           const Icon = roomIcons[room.name];
           const risk = roomRisks.find((item) => item.room === room.name)?.risk ?? 35;
-          const active = hoveredRoom === room.name || activeReading.room === room.name;
+          const active =
+            hoveredRoom === room.name ||
+            selectedRoom === room.name ||
+            activeReading.room === room.name;
 
           return (
             <motion.g
               key={room.name}
               onMouseEnter={() => setHoveredRoom(room.name)}
               onMouseLeave={() => setHoveredRoom(null)}
+              onClick={() => setSelectedRoom(room.name)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setSelectedRoom(room.name);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`ดูข้อมูลความเสี่ยง ${roomThai[room.name]}`}
+              className="cursor-pointer outline-none"
               initial={false}
               animate={{ opacity: active ? 1 : 0.95 }}
             >
@@ -146,6 +232,27 @@ export function CondoFloorplanMap({
           <NearFallMarker key={reading.timestamp} reading={reading} />
         ))}
 
+        {rooms.map((room) => (
+          <path
+            key={`click-${room.name}`}
+            d={room.d}
+            fill="rgba(255,255,255,0.001)"
+            stroke="none"
+            role="button"
+            tabIndex={0}
+            data-room-click-target={room.name}
+            aria-label={`ดูข้อมูลความเสี่ยง ${roomThai[room.name]}`}
+            className="cursor-pointer"
+            onClick={() => setSelectedRoom(room.name)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                setSelectedRoom(room.name);
+              }
+            }}
+          />
+        ))}
+
         <RiskLegend />
       </svg>
 
@@ -156,6 +263,14 @@ export function CondoFloorplanMap({
             เสี่ยง {roomRisks.find((room) => room.room === hoveredRoom)?.risk}%
           </span>
         </div>
+      )}
+
+      {selectedRoom && (
+        <RoomGuidancePanel
+          room={selectedRoom}
+          risk={roomRisks.find((room) => room.room === selectedRoom)?.risk ?? 35}
+          onClose={() => setSelectedRoom(null)}
+        />
       )}
     </div>
   );
@@ -223,5 +338,78 @@ function RiskLegend() {
         </div>
       </div>
     </foreignObject>
+  );
+}
+
+function RoomGuidancePanel({
+  room,
+  risk,
+  onClose,
+}: {
+  room: RoomName;
+  risk: number;
+  onClose: () => void;
+}) {
+  const guidance = roomGuidance[room];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.22 }}
+      className="absolute bottom-5 left-5 right-5 z-20 rounded-2xl border border-slate-200 bg-white/96 p-4 text-slate-950 shadow-[0_18px_45px_rgba(15,23,42,0.18)] backdrop-blur"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-extrabold text-cyan-700">กดบนแผนที่เพื่อดูรายละเอียด</div>
+          <h3 className="mt-1 text-lg font-extrabold">{roomThai[room]}</h3>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-extrabold text-slate-700 hover:bg-slate-100"
+        >
+          ปิด
+        </button>
+      </div>
+
+      <div className="mt-3 grid gap-3 md:grid-cols-[1fr_.9fr]">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
+          <div className="text-xs font-extrabold text-amber-800">สิ่งที่ควรระวัง</div>
+          <p className="mt-1 text-sm font-bold leading-6 text-slate-950">{guidance.focus}</p>
+          <ul className="mt-2 space-y-1 text-sm font-semibold text-slate-700">
+            {guidance.cautions.map((item) => (
+              <li key={item}>- {item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="rounded-xl border border-cyan-200 bg-cyan-50 p-3">
+          <div className="text-xs font-extrabold text-cyan-800">ลักษณะการเดิน</div>
+          <p className="mt-1 text-sm font-bold leading-6 text-slate-950">{guidance.walking}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {guidance.activities.map((activity) => (
+              <span
+                key={activity.code}
+                className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-extrabold text-slate-800"
+              >
+                {activity.code} · {activity.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center gap-3 text-xs font-bold text-slate-700">
+        <span>ความเสี่ยงห้องนี้</span>
+        <div className="h-2 flex-1 rounded-full bg-slate-100">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-amber-300 to-rose-500"
+            style={{ width: `${risk}%` }}
+          />
+        </div>
+        <span className="text-slate-950">{risk}%</span>
+      </div>
+    </motion.div>
   );
 }
