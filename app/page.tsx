@@ -1,16 +1,16 @@
 "use client";
 
-import { AlertTriangle, Footprints, MessageCircleHeart, ShieldAlert } from "lucide-react";
+import { AlertTriangle, Footprints, MessageCircleHeart } from "lucide-react";
 import { CondoFloorplanMap } from "@/components/floorplan/CondoFloorplanMap";
 import { AIInsightCard } from "@/components/AIInsightCard";
 import { CurrentActionCard } from "@/components/CurrentActionCard";
 import { LiveMonitoringBadge } from "@/components/LiveMonitoringBadge";
 import { RealtimeAlertPanel } from "@/components/RealtimeAlertPanel";
+import { RiskRoomSummaryCard } from "@/components/RiskRoomSummaryCard";
 import { RiskScoreCard } from "@/components/RiskScoreCard";
 import { MobilityTrendChart } from "@/components/charts/MobilityTrendChart";
 import { StabilityChart } from "@/components/charts/StabilityChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useMonitoringStore } from "@/store/monitoring-store";
 
 const fallTypeCodes = [
@@ -81,14 +81,13 @@ export default function MainDashboardPage() {
         </Card>
 
         <div className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
-            <RiskScoreCard
-              label="ความเสี่ยงล้ม"
-              value={metrics.riskScore}
-              icon={ShieldAlert}
-              tone="risk"
-              detail="ประเมินล่าสุด"
-            />
+          <RiskRoomSummaryCard
+            riskScore={metrics.riskScore}
+            rooms={topRooms}
+            roomLabel={roomLabelThai}
+          />
+
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
             <RiskScoreCard
               label="การเดิน"
               value={metrics.mobilityScore}
@@ -126,35 +125,6 @@ export default function MainDashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>ห้องที่เสี่ยงที่สุด</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {topRooms.map((room, index) => (
-                <div
-                  key={room.room}
-                  className="rounded-lg border border-slate-200 bg-slate-50 p-3"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Badge variant={index === 0 ? "danger" : "soft"}>
-                        #{index + 1}
-                      </Badge>
-                      <span className="font-bold text-slate-950">{roomLabelThai(room.room)}</span>
-                    </div>
-                    <span className="text-sm font-bold text-slate-700">เสี่ยง {room.risk}%</span>
-                  </div>
-                  <div className="mt-3 h-2 rounded-full bg-slate-800">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-amber-300 to-rose-500"
-                      style={{ width: `${room.risk}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
         </div>
       </section>
 
