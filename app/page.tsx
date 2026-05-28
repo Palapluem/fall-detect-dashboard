@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Footprints, MessageCircleHeart } from "lucide-react";
+import { AlertTriangle, Footprints } from "lucide-react";
 import { CondoFloorplanMap } from "@/components/floorplan/CondoFloorplanMap";
 import { AIInsightCard } from "@/components/AIInsightCard";
 import { CurrentActionCard } from "@/components/CurrentActionCard";
@@ -98,22 +98,6 @@ export default function MainDashboardPage() {
 
           <CurrentActionCard />
 
-          <Card className="border-cyan-100 bg-cyan-50/70">
-            <CardContent className="flex gap-3 p-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-cyan-700 shadow-sm">
-                <MessageCircleHeart className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="text-sm font-extrabold text-slate-950">
-                  แนะนำให้ถามผู้สูงอายุ
-                </div>
-                <p className="mt-1 text-sm font-semibold leading-6 text-slate-700">
-                  ลองถามคุณสมชายว่า “ตอนนี้อยากได้อะไรเพิ่มไหม เช่น น้ำดื่ม เปิดไฟ หรือให้ช่วยพาไปห้องน้ำ”
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
         </div>
       </section>
 
@@ -123,15 +107,12 @@ export default function MainDashboardPage() {
           <CardHeader>
             <CardTitle>สิ่งที่ควรดู</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-3 text-sm font-semibold text-slate-800 md:grid-cols-3">
+          <CardContent className="grid gap-3 text-sm font-semibold text-slate-800 md:grid-cols-2">
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
               ห้องน้ำและทางเดินเป็นจุดที่ต้องระวังมากที่สุด
             </div>
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
               ช่วงกลางคืนมีโอกาสเดินไม่มั่นคงมากขึ้น
-            </div>
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-              ดูรายละเอียดเพิ่มเติมได้ในหน้าแจ้งเตือนและวิเคราะห์
             </div>
           </CardContent>
         </Card>

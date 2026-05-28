@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import { Activity, Database, ShieldCheck, TriangleAlert } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Activity, ShieldCheck, TriangleAlert } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -192,14 +192,6 @@ export function CurrentActionCard() {
   const action = actionClasses[index];
   const riskStyle = riskStyles[action.risk];
   const RiskIcon = riskStyle.icon;
-  const datasetSummary = useMemo(
-    () => ({
-      totalWindows: 3435,
-      windowDuration: 2,
-      sampleRate: 20,
-    }),
-    [],
-  );
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -235,31 +227,9 @@ export function CurrentActionCard() {
               {action.note}
             </p>
           </motion.div>
-
-          <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-            <Metric label="AI มั่นใจ" value={`${action.confidence}%`} />
-            <Metric label="Windows" value={action.windows.toLocaleString()} />
-            <Metric label="Samples" value={action.samples.toLocaleString()} />
-          </div>
-
-          <div className="mt-3 flex items-center gap-2 rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-700">
-            <Database className="h-4 w-4 text-cyan-700" />
-            <span>
-              ชุดข้อมูล {datasetSummary.totalWindows.toLocaleString()} windows · {datasetSummary.windowDuration}s/window · {datasetSummary.sampleRate}Hz
-            </span>
-          </div>
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
-      <div className="font-bold text-slate-500">{label}</div>
-      <div className="mt-1 text-sm font-extrabold text-slate-950">{value}</div>
-    </div>
   );
 }
 
