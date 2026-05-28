@@ -211,11 +211,7 @@ export function CurrentActionCard() {
 
   return (
     <Card className={cn("overflow-hidden", riskStyle.card)}>
-      <CardContent className="grid gap-4 p-4 md:grid-cols-[156px_1fr] md:items-center xl:grid-cols-1 2xl:grid-cols-[156px_1fr]">
-        <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200">
-          <PoseIllustration pose={action.pose} risk={action.risk} />
-        </div>
-
+      <CardContent className="p-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-extrabold text-slate-700">กำลังทำอยู่</span>
