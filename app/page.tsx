@@ -3,6 +3,7 @@
 import { AlertTriangle, Footprints, MessageCircleHeart, ShieldAlert } from "lucide-react";
 import { CondoFloorplanMap } from "@/components/floorplan/CondoFloorplanMap";
 import { AIInsightCard } from "@/components/AIInsightCard";
+import { CurrentActionCard } from "@/components/CurrentActionCard";
 import { LiveMonitoringBadge } from "@/components/LiveMonitoringBadge";
 import { RealtimeAlertPanel } from "@/components/RealtimeAlertPanel";
 import { RiskScoreCard } from "@/components/RiskScoreCard";
@@ -106,6 +107,8 @@ export default function MainDashboardPage() {
           </div>
 
           <RealtimeAlertPanel alerts={alerts.slice(0, 3)} />
+
+          <CurrentActionCard />
 
           <Card className="border-cyan-100 bg-cyan-50/70">
             <CardContent className="flex gap-3 p-4">
