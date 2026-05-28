@@ -3,8 +3,8 @@ import { formatClock } from "@/lib/utils";
 
 function severityFromRisk(risk: number): AlertSeverity {
   if (risk >= 90) return "emergency";
-  if (risk >= 78) return "high";
-  if (risk >= 58) return "medium";
+  if (risk > 70) return "high";
+  if (risk >= 36) return "medium";
   return "low";
 }
 
@@ -95,7 +95,7 @@ export function analyzeReading(
         createdAt: formatClock(reading.timestamp),
       },
       alert:
-        reading.fall_risk > 62
+        reading.fall_risk > 70
           ? {
               id: `alert-gait-${idSuffix}`,
               message: "Abnormal gait pattern detected",

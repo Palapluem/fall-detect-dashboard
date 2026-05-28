@@ -81,7 +81,7 @@ export function RiskRoomSummaryCard({
 }
 
 function riskTone(riskScore: number) {
-  if (riskScore >= 70) {
+  if (riskScore > 70) {
     return {
       label: "สูง",
       badge: "danger" as const,
@@ -92,7 +92,7 @@ function riskTone(riskScore: number) {
     };
   }
 
-  if (riskScore >= 45) {
+  if (riskScore >= 36) {
     return {
       label: "ปานกลาง",
       badge: "warning" as const,

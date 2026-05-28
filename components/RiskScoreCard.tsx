@@ -75,11 +75,11 @@ export function RiskScoreCard({
 function progressColor(pct: number, tone: keyof typeof tones) {
   if (tone === "safe") {
     if (pct >= 70) return "bg-emerald-500";
-    if (pct >= 45) return "bg-amber-400";
+    if (pct >= 36) return "bg-amber-400";
     return "bg-rose-500";
   }
 
-  if (pct >= 70) return "bg-rose-500";
-  if (pct >= 45) return "bg-amber-400";
+  if (pct > 70) return "bg-rose-500";
+  if (pct >= 36) return "bg-amber-400";
   return "bg-emerald-500";
 }

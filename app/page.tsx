@@ -38,9 +38,9 @@ export default function MainDashboardPage() {
           <div>
             <div className="text-sm font-bold text-slate-700">สรุปวันนี้</div>
             <h2 className="mt-1 text-2xl font-semibold">
-              {metrics.riskScore >= 70
+              {metrics.riskScore > 70
                 ? "ควรให้ผู้ดูแลเข้าไปดู"
-                : metrics.riskScore >= 50
+                : metrics.riskScore >= 36
                   ? "มีความเสี่ยงปานกลาง ควรคอยสังเกต"
                   : "ตอนนี้ค่อนข้างปลอดภัย"}
             </h2>

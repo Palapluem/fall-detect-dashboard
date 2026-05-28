@@ -123,7 +123,7 @@ export function CondoFloorplanMap({
   const visibleHeatPoints = useMemo(
     () =>
       [...riskZones, ...heatPoints]
-        .filter((point) => point.intensity >= 62)
+        .filter((point) => point.intensity >= 36)
         .filter((point, index, all) => index === all.findIndex((item) => item.id === point.id))
         .slice(compact ? -14 : -22),
     [compact, heatPoints],
@@ -277,9 +277,8 @@ export function CondoFloorplanMap({
 }
 
 function roomHeatOpacity(risk: number) {
-  if (risk >= 82) return 0.2;
-  if (risk >= 62) return 0.16;
-  if (risk >= 42) return 0.1;
+  if (risk > 70) return 0.2;
+  if (risk >= 36) return 0.12;
   return 0.05;
 }
 

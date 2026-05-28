@@ -10,9 +10,8 @@ export function clamp(value: number, min: number, max: number) {
 }
 
 export function riskColor(score: number) {
-  if (score >= 82) return "#ef4444";
-  if (score >= 62) return "#f97316";
-  if (score >= 42) return "#facc15";
+  if (score > 70) return "#ef4444";
+  if (score >= 36) return "#facc15";
   return "#22c55e";
 }
 
